@@ -13,7 +13,85 @@
 				}
 			});
 			
-			alert(geoXML);
+			$(document).ready(function (){
+				
+				$("#scontinent").change(changeContinent);
+				$("#sregion").change(changeRegion);
+				//$("#scontry").change(changeCountry);
+				
+				initSelect("#scontinent");
+				initSelect("#sregion");
+				initSelect("#scountry");
+				
+				//load the select with continent data
+				loadSelectContinent();
+				
+				
+				
+			});
+			
+			function initSelect(selectId) {
+				$(selectId).empty();
+				$(selectId).append($("<option/>").text("Loading...").attr("disabled","disabled"));
+				
+			}
+			
+			function loadSelectContinent() {
+				continentCollection = $(geoXML).find("continent");
+				$("#scontinent").empty();
+				initSelect("#sregion");
+				initSelect("#scountry");
+				$("#scontinent").append($("<option/>").text("Select a Continent").attr("disabled","disabled").attr("selected","selected"));
+				$(continentCollection).each(function (index,node) {
+					continent_id = $(node).attr("id");
+					continent_name = $(node).children("name").text();
+					$("#scontinent").append($("<option/>").text(continent_name).attr("id",continent_id))
+				});
+			}
+			
+			function loadSelectRegion(continent_id) {
+				
+				filterS = "[id='"+continent_id+"']";
+				//alert(filterS);
+				
+				regionCollection = $(geoXML).find("continent").filter(filterS).children("region");
+				$("#sregion").empty();
+				initSelect("#scountry");
+				$("#sregion").append($("<option/>").text("Select a Region").attr("disabled","disabled").attr("selected","selected"));
+				$(regionCollection).each(function (index,node) {
+					region_id = $(node).attr("id");
+					region_name = $(node).children("name").text();
+					$("#sregion").append($("<option/>").text(region_name).attr("id",region_id));
+				});
+			}
+			
+			
+			function loadSelectCountry(region_id) {
+				filterS = "[id='"+region_id+"']";
+				//alert(filterS);
+				
+				countryCollection = $(geoXML).find("region").filter(filterS).children("country");
+				$("#scountry").empty();
+				$("#scountry").append($("<option/>").text("Select a Country").attr("disabled","disabled").attr("selected","selected"));
+				$(countryCollection).each(function (index,node) {
+					country_id = $(node).attr("id");
+					country_name = $(node).children("name").text();
+					$("#scountry").append($("<option/>").text(country_name).attr("id",country_id));
+				});
+			}
+			
+			function changeContinent() {	
+				continent_id = $("#scontinent").find(":selected").attr("id");
+				//alert(continent_id);
+				loadSelectRegion(continent_id);
+			}
+			
+			function changeRegion() {	
+				region_id = $("#sregion").find(":selected").attr("id");
+				loadSelectCountry(region_id);
+			}
+			
+			
 			
 		</script>
 	</body>
