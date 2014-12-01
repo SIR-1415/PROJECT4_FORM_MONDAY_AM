@@ -1,0 +1,29 @@
+<html>
+	<body>
+		<script src="jquery/jquery-2.1.1.js"></script>
+		<script>
+			var geoXML; // stores the XML document with geo data
+			$.ajax({
+				url: "geo.xml",
+				type : "GET",
+				datatype : "xml",
+				async : false,
+				success : function (data) {
+					geoXML = data;
+				}
+			});
+			
+			alert(geoXML);
+			
+		</script>
+	</body>
+	<html>
+		<form id="f1" method="GET" action="dump.php">
+			<label for="scontinent">continent</label><select id="scontinent" name="continent"></select>
+			<br/>
+			<label for="scontinent">region</label><select id="sregion" name="region"></select>
+			<br/>
+			<label for="scontinent">country</label><select id="scountry" name="country"></select>
+		</form>
+	</html>
+</html>
